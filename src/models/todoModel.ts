@@ -1,6 +1,19 @@
-import mongoose, { Schema } from "mongoose"
+import mongoose, { Document, Schema } from "mongoose"
 
-const todoModel = new Schema(
+export interface Todo extends Document{
+  user?:string,
+  title?:string,
+  description?:string,
+  status?:string
+}
+
+export enum Status{
+   NOT_STARTED= "NOT_STARTED",
+   IN_PROGRESS= "IN_PROGRESS",
+   DONE="DONE"
+}
+
+const todoModel = new Schema<Todo> (
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -18,8 +31,8 @@ const todoModel = new Schema(
     status: {
       type: String,
       required: true,
-      default: "not-started",
-      enum: ["not-started", "in-progress", "done"],
+      default: Status.NOT_STARTED,
+      enum: Object.values(Status),
     },
   },
   {
