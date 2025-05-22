@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler"
-import Todo from "../models/todoModel.js"
+import Todo from "../models/todoModel"
 import { Request, Response } from "express"
-import { ProtectedRequest } from "../types/app-request.js"
+import { ProtectedRequest } from "../types/app-request"
 
 const createTodo = asyncHandler(async (req:ProtectedRequest, res:Response ) => {
   const { title, description } = req.body

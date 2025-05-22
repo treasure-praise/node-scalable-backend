@@ -1,8 +1,9 @@
-import User from "../models/userModel.js"
+import User from "../models/userModel"
 import asyncHandler from "express-async-handler"
-import generateToken from "../utils/generateToken.js"
-import { ProtectedRequest } from "../types/app-request.js"
+import generateToken from "../utils/generateToken"
+import { ProtectedRequest } from "../types/app-request"
 import { Response } from "express"
+import mongoose from "mongoose"
 
 const loginUser = asyncHandler(async (req:ProtectedRequest, res:Response) => {
   const { email, password } = req.body
@@ -15,7 +16,7 @@ const loginUser = asyncHandler(async (req:ProtectedRequest, res:Response) => {
   }
 
   if (user && (await user?.matchPasswords?.(password))) {
-    generateToken(res, user._id)
+    generateToken(res, user._id as mongoose.Types.ObjectId)
     res.json({
       _id: user._id,
       name: user.name,
@@ -40,7 +41,7 @@ const registerUser = asyncHandler(async (req:ProtectedRequest, res:Response) => 
   const user = await User.create({ name, email, password })
 
   if (user) {
-    generateToken(res, user._id)
+    generateToken(res, user._id as mongoose.Types.ObjectId)
     res.status(201)
     res.json({
       _id: user._id,
